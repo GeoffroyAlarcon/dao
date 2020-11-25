@@ -13,10 +13,10 @@ import fr.demos.model.PersonneDao;
 
 public class Main {
 	public static void main(String[] args) {
+		Personne zlatan = new Personne(2, "Ibrahimovic", "Zlatan");
 
 		PersonneDao personneDao = new PersonneDao();
-
-		personneDao.findAll();
+		personneDao.findById(5);
 	}
 
 }// fin de la classe

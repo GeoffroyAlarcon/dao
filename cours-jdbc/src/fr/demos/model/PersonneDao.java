@@ -60,7 +60,7 @@ public class PersonneDao implements Dao<Personne> {
 				ps.setString(1, personne.getNom());
 				ps.setString(2, personne.getPrenom());
 				ps.setInt(3, personne.getNum());
-				int nbr = ps.executeUpdate();
+				ps.executeUpdate();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -70,8 +70,30 @@ public class PersonneDao implements Dao<Personne> {
 
 	@Override
 	public Personne findById(int id) {
-		// TODO Auto-generated method stub
+		Connection c = MyConnection.getConnection();
+		if (c != null) {
+			try {
+				String request = "select * from personne where num = ?; ";
+				PreparedStatement ps = c.prepareStatement(request);
+				ps.setInt(1, id);
+				ResultSet result = ps.executeQuery();
+
+				if (result.next()) {
+					int num = result.getInt(1);
+					String nom = result.getString(2);
+					String prenom = result.getString(3);
+					System.out.println(num + " " + nom + " " + prenom);
+				}
+				else {
+					System.err.println("personne non trouvée ! ");
+					
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 		return null;
+
 	}
 
 	@Override
@@ -80,23 +102,20 @@ public class PersonneDao implements Dao<Personne> {
 		Connection c = MyConnection.getConnection();
 		if (c != null) {
 			try {
-			Statement statement = c.createStatement();
-			String request = "SELECT * FROM Personne;";
-			ResultSet result = statement.executeQuery(request);
-			while (result.next()) {
-				int num = result.getInt(1);
-				String nom = result.getString(2);
-				String prenom = result.getString(3);
-				System.out.println(num + " " + nom + " " + prenom);
-			}
-			}
-			catch (SQLException e) {
+				Statement statement = c.createStatement();
+				String request = "SELECT * FROM Personne;";
+				ResultSet result = statement.executeQuery(request);
+				while (result.next()) {
+					int num = result.getInt(1);
+					String nom = result.getString(2);
+					String prenom = result.getString(3);
+					System.out.println(num + " " + nom + " " + prenom);
+				}
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
 		return null;
 	}
-
-
 
 }
